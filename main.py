@@ -1,8 +1,14 @@
+from typing import List, Dict, Any
+
 from requests import get
 import json
 
+company_id = [
+    1413874,   # Булочные Ф. Вольчека
 
-def get_info_company(id_company) -> str:
+]
+
+def get_info_company(id_company) -> dict[str, Any]:
 
     hh_api = f"https://api.hh.ru/employers/{id_company}"
     response = get(hh_api)
@@ -17,7 +23,7 @@ def get_info_company(id_company) -> str:
     return company_dict
 
 
-def get_info_vacancy(vacancy_url) -> str:
+def get_info_vacancy(vacancy_url) -> list[dict[str, Any]]:
 
     vacancy_list = []
 
@@ -26,12 +32,34 @@ def get_info_vacancy(vacancy_url) -> str:
     vacancy = json.loads(response.content.decode())
 
     for i in vacancy['items']:
-        vacancy_dict = {
-            'vacancy_id': i['id'],
-            'vacancy_name': i['name'],
-            'salary': i['salary']
-                        }
-        vacancy_list.append(vacancy_dict)
+
+        if i['salary'] == None:
+            vacancy_dict = {
+                'vacancy_id': i['id'],
+                'vacancy_name': i['name'],
+                'salary': 0,
+                'area': i['area']['name']
+                            }
+            vacancy_list.append(vacancy_dict)
+
+        else:
+            if i['salary']['from'] == None:
+                vacancy_dict = {
+                    'vacancy_id': i['id'],
+                    'vacancy_name': i['name'],
+                    'salary': 0,
+                    'area': i['area']['name']
+                                }
+                vacancy_list.append(vacancy_dict)
+
+            else:
+                vacancy_dict = {
+                    'vacancy_id': i['id'],
+                    'vacancy_name': i['name'],
+                    'salary': i['salary']['from'],
+                    'area': i['area']['name']
+                }
+                vacancy_list.append(vacancy_dict)
 
     return vacancy_list
 
@@ -41,7 +69,7 @@ def get_info_vacancy(vacancy_url) -> str:
 
 # print(get_info_vacancy('https://api.hh.ru/vacancies?employer_id=1740'))
 
-for i in get_info_vacancy('https://api.hh.ru/vacancies?employer_id=1740'):
+for i in get_info_vacancy('https://api.hh.ru/vacancies?employer_id=1413874'):
     print(i)
     print('*' * 100)
 
