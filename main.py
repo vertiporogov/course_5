@@ -5,7 +5,7 @@ import json
 
 company_id = [
     1413874,   # Булочные Ф. Вольчека
-
+    1221656,   # НЭМО
 ]
 
 def get_info_company(id_company) -> dict[str, Any]:
@@ -23,6 +23,13 @@ def get_info_company(id_company) -> dict[str, Any]:
     return company_dict
 
 
+def h(dd):
+    hh_api = dd
+    response = get(hh_api)
+    vacancy = json.loads(response.content.decode())
+    return vacancy
+
+
 def get_info_vacancy(vacancy_url) -> list[dict[str, Any]]:
 
     vacancy_list = []
@@ -32,6 +39,7 @@ def get_info_vacancy(vacancy_url) -> list[dict[str, Any]]:
     vacancy = json.loads(response.content.decode())
 
     for i in vacancy['items']:
+
 
         if i['salary'] == None:
             vacancy_dict = {
@@ -61,6 +69,7 @@ def get_info_vacancy(vacancy_url) -> list[dict[str, Any]]:
                 }
                 vacancy_list.append(vacancy_dict)
 
+
     return vacancy_list
 
 # for i in get_info_vacancy('https://api.hh.ru/vacancies?employer_id=2104700')['items']:
@@ -69,9 +78,17 @@ def get_info_vacancy(vacancy_url) -> list[dict[str, Any]]:
 
 # print(get_info_vacancy('https://api.hh.ru/vacancies?employer_id=1740'))
 
-for i in get_info_vacancy('https://api.hh.ru/vacancies?employer_id=1413874'):
+# print(h('https://api.hh.ru/vacancies?employer_id=1740'))
+# for i in h('https://api.hh.ru/vacancies?employer_id=1740')['items']:
+#     print(i)
+#     print(' ')
+#     print('*' * 100)
+#     print(' ')
+for i in get_info_vacancy('https://api.hh.ru/vacancies?employer_id=1740'):
     print(i)
+    print(' ')
     print('*' * 100)
+    print(' ')
 
 # for i in get_info()['items']:
 #     print(i)
