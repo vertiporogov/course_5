@@ -61,13 +61,14 @@ def get_info_vacancy(vacancy_url) -> list[dict[str, Any]]:
                 vacancy_list.append(vacancy_dict)
 
             else:
-                vacancy_dict = {
-                    'vacancy_id': i['id'],
-                    'vacancy_name': i['name'],
-                    'salary': i['salary']['from'],
-                    'area': i['area']['name']
-                }
-                vacancy_list.append(vacancy_dict)
+                if i['salary']['currency'] == 'RUR':
+                    vacancy_dict = {
+                        'vacancy_id': i['id'],
+                        'vacancy_name': i['name'],
+                        'salary': i['salary']['from'],
+                        'area': i['area']['name']
+                    }
+                    vacancy_list.append(vacancy_dict)
 
 
     return vacancy_list
