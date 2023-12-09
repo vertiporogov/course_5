@@ -8,6 +8,7 @@ company_id = [
     1221656,   # НЭМО
 ]
 
+
 def get_info_company(id_company) -> dict[str, Any]:
 
     hh_api = f"https://api.hh.ru/employers/{id_company}"
@@ -40,8 +41,7 @@ def get_info_vacancy(vacancy_url) -> list[dict[str, Any]]:
 
     for i in vacancy['items']:
 
-
-        if i['salary'] == None:
+        if i['salary'] is None:
             vacancy_dict = {
                 'vacancy_id': i['id'],
                 'vacancy_name': i['name'],
@@ -51,7 +51,7 @@ def get_info_vacancy(vacancy_url) -> list[dict[str, Any]]:
             vacancy_list.append(vacancy_dict)
 
         else:
-            if i['salary']['from'] == None:
+            if i['salary']['from'] is None:
                 vacancy_dict = {
                     'vacancy_id': i['id'],
                     'vacancy_name': i['name'],
@@ -70,7 +70,6 @@ def get_info_vacancy(vacancy_url) -> list[dict[str, Any]]:
                     }
                     vacancy_list.append(vacancy_dict)
 
-
     return vacancy_list
 
 # for i in get_info_vacancy('https://api.hh.ru/vacancies?employer_id=2104700')['items']:
@@ -85,7 +84,10 @@ def get_info_vacancy(vacancy_url) -> list[dict[str, Any]]:
 #     print(' ')
 #     print('*' * 100)
 #     print(' ')
+
+
 for i in get_info_vacancy('https://api.hh.ru/vacancies?employer_id=1740'):
+
     print(i)
     print(' ')
     print('*' * 100)
@@ -94,4 +96,3 @@ for i in get_info_vacancy('https://api.hh.ru/vacancies?employer_id=1740'):
 # for i in get_info()['items']:
 #     print(i)
 #     print('*' * 100)
-
